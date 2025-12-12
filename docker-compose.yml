@@ -1,0 +1,12 @@
+services:
+  bw-backup:
+    build: .
+    container_name: bitwarden-backup
+    restart: always
+    environment:
+      - BW_SERVER_URL=${BW_SERVER_URL}
+      - BW_CLIENTID=${BW_CLIENTID}
+      - BW_CLIENTSECRET=${BW_CLIENTSECRET}
+      - BW_PASSWORD=${BW_PASSWORD}
+      - BACKUP_ENCRYPTION_PASS=${BACKUP_ENCRYPTION_PASS}
+      - RCLONE_CONF_BASE64=${RCLONE_CONF_BASE64}
