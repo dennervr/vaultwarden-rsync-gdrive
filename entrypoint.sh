@@ -16,9 +16,19 @@ fi
 # 2. Default setup for the backup script
 chmod +x /app/backup.sh
 
-# 3. Configure Cron
-echo "0 0 * * * /app/backup.sh >> /proc/1/fd/1 2>&1" > /etc/crontabs/root
+# Decide whether to run once and exit, or run scheduled via cron
+# If RUN_ONCE is set to "true" (case-insensitive), execute the backup and exit.
+if [ -n "$RUN_ONCE" ] && [ "$(echo "$RUN_ONCE" | tr '[:upper:]' '[:lower:]')" = "true" ]; then
+    echo "[INIT] RUN_ONCE=true detected — running backup once and exiting..."
+    /app/backup.sh
+    exit $?
+fi
 
-# 4. Inicia o Cron
-echo "[INIT] Starting Cron scheduler..."
+# 3. Configure Cron — allow custom schedule via CRON_SCHEDULE env var (default: midnight UTC)
+: "${CRON_SCHEDULE:=0 0 * * *}"
+CRON_LINE="$CRON_SCHEDULE /app/backup.sh >> /proc/1/fd/1 2>&1"
+echo "$CRON_LINE" > /etc/crontabs/root
+
+# 4. Start Cron in foreground
+echo "[INIT] Starting Cron scheduler with schedule: $CRON_SCHEDULE"
 crond -f -l 8

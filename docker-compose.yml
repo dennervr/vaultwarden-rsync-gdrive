@@ -10,3 +10,7 @@ services:
       - BW_PASSWORD=${BW_PASSWORD}
       - BACKUP_ENCRYPTION_PASS=${BACKUP_ENCRYPTION_PASS}
       - RCLONE_CONF_BASE64=${RCLONE_CONF_BASE64}
+      # Optional: set to "true" to run the backup once and exit
+      - RUN_ONCE=${RUN_ONCE}
+      # Optional: set custom cron schedule (cron format: minute hour day month weekday)
+      - CRON_SCHEDULE=${CRON_SCHEDULE}
