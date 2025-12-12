@@ -69,9 +69,3 @@ docker compose up -d --build
 ```
 
 Note: The service UI displays times in UTC. If the service schedule is shown at a certain hour there, set `CRON_SCHEDULE` to the corresponding UTC hour.
-
-## Notes
-
-- Bitwarden server is set via `$BW_SERVER_URL` in [`backup.sh`](backup.sh).
-- Ensure your rclone remote `drive` exists in `rclone.conf`.
-- Keep `.env` out of source control if publishing publicly.
